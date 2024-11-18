@@ -30,17 +30,38 @@ export class SongsService {
 
   async findFree() {
     try {
-      await this.DB.song.findMany({
+      const result = await this.DB.song.findMany({
         where: { price: 0 },
       });
+      return result.map((item) => ({
+        id: item.id,
+        title: item.title,
+        artist: item.artist,
+        duration: item.duration,
+        price: item.price,
+      }))
     } catch {
       return { message: 'Song not found' };
     }
   }
 
-  
-
-
+  async findPopularArtist() {
+    const result = await this.DB.song.groupBy({
+      by: ['artist'],
+      _count: {
+        artist: true,
+      },
+      orderBy: {
+        _count: {
+          artist: 'desc',
+        },
+      },
+    });
+    return result.map((item) => ({
+      artist: item.artist,
+      numberOfSongs: item._count.artist,
+    }));
+  }
 
   async update(id: number, updateSongDto: UpdateSongDto) {
     const updatedSong = await this.DB.song.update({

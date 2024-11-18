@@ -22,12 +22,15 @@ export class SongsController {
     return this.songsService.findOne(+id);
   }
 
-  @Get(':free')
+  @Get('free')
   findFree() {
     return this.songsService.findFree();
   }
 
-  
+  @Get('popularArtist')
+  findPopularArtist() {
+    return this.songsService.findPopularArtist();
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
