@@ -8,7 +8,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
+datasource MusicDB {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Song {
+  id       Int    @id @default(autoincrement())
+  title    String
+  artist   String
+  duration Int    @MusicDB.Int
+  price    Int    @MusicDB.Int
 }
